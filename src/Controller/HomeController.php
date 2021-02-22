@@ -35,6 +35,24 @@ class HomeController
         return $response;
     }
 
+    public function show(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+
+        $id = $request->getAttribute('id');
+
+        try {
+            $data = $this->twig->render('home/show.html.twig', [
+                'trailer' => $this->em->getRepository(Movie::class)->find($id)
+            ]);
+        } catch (\Exception $e) {
+            throw new HttpBadRequestException($request, $e->getMessage(), $e);
+        }
+
+        $response->getBody()->write($data);
+
+        return $response;
+    }
+
     protected function fetchData(): Collection
     {
         $data = $this->em->getRepository(Movie::class)
