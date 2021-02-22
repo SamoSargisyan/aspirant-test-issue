@@ -23,3 +23,13 @@ services:
       MYSQL_DATABASE: slim_project
       MYSQL_USER: webmaster
       MYSQL_PASSWORD: webmaster
+    volumes:
+      - ./docker/mysql:/var/lib/mysql:cached
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    links:
+      - database
